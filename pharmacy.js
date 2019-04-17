@@ -66,6 +66,18 @@ export class MagicPill extends Drug {
   }
 }
 
+export class Dafalgan extends Drug {
+  constructor(expiresIn, benefit) {
+    super('Dafalgan', expiresIn, benefit);
+  }
+
+  updateBenefitValue() {
+    this.expiresIn += -1;
+    this.benefit += (this.expiresIn < 0 ? -4 : -2);
+    this.benefit = Math.max(this.benefit, 0);
+  }
+}
+
 export class DrugFactory {
   static createDrug(name, expiresIn, benefit) {
     switch (name) {
@@ -77,6 +89,8 @@ export class DrugFactory {
         return new Fervex(expiresIn, benefit);
       case 'Magic Pill':
         return new MagicPill(expiresIn, benefit);
+      case 'Dafalgan':
+        return new Dafalgan(expiresIn, benefit);
       default:
         return new Drug(name, expiresIn, benefit);
     }

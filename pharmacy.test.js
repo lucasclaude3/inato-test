@@ -93,6 +93,20 @@ describe('Magic Pill', () => {
   });
 });
 
+describe('Dafalgan', () => {
+  it('should decrease the benefit and decrease expiresIn twice as fast as normal drugs', () => {
+    const dafalgan = DrugFactory.createDrug('Dafalgan', 2, 3);
+    dafalgan.updateBenefitValue();
+    expect(dafalgan).toEqual(DrugFactory.createDrug('Dafalgan', 1, 1));
+  });
+
+  it('should decrease the benefit four times as fast when expired', () => {
+    const dafalgan = DrugFactory.createDrug('Dafalgan', 0, 5);
+    dafalgan.updateBenefitValue();
+    expect(dafalgan).toEqual(DrugFactory.createDrug('Dafalgan', -1, 1));
+  });
+});
+
 describe('Pharmacy', () => {
   it('should handle multiple drugs data update', () => {
     expect(new Pharmacy([DrugFactory.createDrug('Herbal Tea', 2, 3), DrugFactory.createDrug('Fervex', 2, 3)]).updateBenefitValue()).toEqual(
