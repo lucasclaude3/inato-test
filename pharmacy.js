@@ -21,12 +21,6 @@ export class Drug {
   }
 }
 
-export class Doliprane extends Drug {
-  constructor(expiresIn, benefit) {
-    super('Doliprane', expiresIn, benefit);
-  }
-}
-
 export class HerbalTea extends Drug {
   constructor(expiresIn, benefit) {
     super('Herbal Tea', expiresIn, benefit);
@@ -81,8 +75,6 @@ export class Dafalgan extends Drug {
 export class DrugFactory {
   static createDrug(name, expiresIn, benefit) {
     switch (name) {
-      case 'Doliprane':
-        return new Doliprane(expiresIn, benefit);
       case 'Herbal Tea':
         return new HerbalTea(expiresIn, benefit);
       case 'Fervex':
