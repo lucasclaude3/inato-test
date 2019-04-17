@@ -1,70 +1,29 @@
 export class Drug {
   constructor(name, expiresIn, benefit) {
+    if (!Number.isInteger(expiresIn)) {
+      throw Error('expiresIn should be a integer');
+    }
+    if (!Number.isInteger(benefit)) {
+      throw Error('benefit should be a integer');
+    }
+    if (benefit > 50 || benefit < 0) {
+      throw Error('benefit should be in the range [0, 50]');
+    }
     this.name = name;
     this.expiresIn = expiresIn;
     this.benefit = benefit;
   }
 
   updateBenefitValue() {
-    if (this.name !== 'Herbal Tea' && this.name !== 'Fervex') {
-      if (this.benefit > 0) {
-        if (this.name !== 'Magic Pill') {
-          this.benefit += -1;
-        }
-      }
-    } else if (this.benefit < 50) {
-      this.benefit += 1;
-      if (this.name === 'Fervex') {
-        if (this.expiresIn < 11) {
-          if (this.benefit < 50) {
-            this.benefit += 1;
-          }
-        }
-        if (this.expiresIn < 6) {
-          if (this.benefit < 50) {
-            this.benefit += 1;
-          }
-        }
-      }
-    }
-
-    if (this.name !== 'Magic Pill') {
-      this.expiresIn += -1;
-    }
-
-    if (this.expiresIn < 0) {
-      if (this.name !== 'Herbal Tea') {
-        if (this.name !== 'Fervex') {
-          if (this.benefit > 0) {
-            if (this.name !== 'Magic Pill') {
-              this.benefit += -1;
-            }
-          }
-        } else {
-          this.benefit = 0;
-        }
-      } else if (this.benefit < 50) {
-        this.benefit += 1;
-      }
-    }
+    this.expiresIn += -1;
+    this.benefit += (this.expiresIn < 0 ? -2 : -1);
+    this.benefit = Math.max(this.benefit, 0);
   }
 }
 
 export class Doliprane extends Drug {
   constructor(expiresIn, benefit) {
     super('Doliprane', expiresIn, benefit);
-  }
-
-  updateBenefitValue() {
-    if (this.benefit > 0) {
-      this.benefit += -1;
-    }
-
-    this.expiresIn += -1;
-
-    if (this.expiresIn < 0 && this.benefit > 0) {
-      this.benefit += -1;
-    }
   }
 }
 
@@ -74,15 +33,9 @@ export class HerbalTea extends Drug {
   }
 
   updateBenefitValue() {
-    if (this.benefit < 50) {
-      this.benefit += 1;
-    }
-
     this.expiresIn += -1;
-
-    if (this.expiresIn < 0 && this.benefit < 50) {
-      this.benefit += 1;
-    }
+    this.benefit += (this.expiresIn < 0 ? 2 : 1);
+    this.benefit = Math.min(this.benefit, 50);
   }
 }
 
@@ -92,21 +45,13 @@ export class Fervex extends Drug {
   }
 
   updateBenefitValue() {
-    if (this.benefit < 50) {
-      this.benefit += 1;
-      if (this.expiresIn < 11 && this.benefit < 50) {
-        this.benefit += 1;
-      }
-      if (this.expiresIn < 6 && this.benefit < 50) {
-        this.benefit += 1;
-      }
-    }
-
-    this.expiresIn = this.expiresIn - 1;
-
-    if (this.expiresIn < 0) {
-      this.benefit = 0;
-    }
+    let addendum = 1;
+    addendum += (this.expiresIn < 11 ? 1 : 0);
+    addendum += (this.expiresIn < 6 ? 1 : 0);
+    this.expiresIn += -1;
+    this.benefit = (this.expiresIn < 0 ? 0 : this.benefit + addendum);
+    this.benefit = Math.max(this.benefit, 0);
+    this.benefit = Math.min(this.benefit, 50);
   }
 }
 

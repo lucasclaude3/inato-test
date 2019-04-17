@@ -1,8 +1,20 @@
 import { DrugFactory, Pharmacy } from './pharmacy';
 
-// Doliprane represents a 'standard' drug behavior according to the model
-describe('Doliprane', () => {
-  it('should decrease the benefit and expiresIn', () => {
+// Doliprane represents a common drug behavior according to the model
+describe('Doliprane (common drug)', () => {
+  it('should throw an error if we call the Drug constructor with non integer values', () => {
+    expect(() => {
+      DrugFactory.createDrug('Doliprane', 'j\'expire quand je veux!', 3);
+    }).toThrow();
+  });
+
+  it('should throw an error if we call the Drug constructor with a benefit outside the specified range', () => {
+    expect(() => {
+      DrugFactory.createDrug('Doliprane', 0, -1);
+    }).toThrow();
+  });
+
+  it('should decrease the benefit and decrease expiresIn', () => {
     const doliprane = DrugFactory.createDrug('Doliprane', 2, 3);
     doliprane.updateBenefitValue();
     expect(doliprane).toEqual(DrugFactory.createDrug('Doliprane', 1, 2));
@@ -12,6 +24,12 @@ describe('Doliprane', () => {
     const doliprane = DrugFactory.createDrug('Doliprane', 0, 3);
     doliprane.updateBenefitValue();
     expect(doliprane).toEqual(DrugFactory.createDrug('Doliprane', -1, 1));
+  });
+
+  it('should not have a benefit below 0', () => {
+    const doliprane = DrugFactory.createDrug('Doliprane', 0, 0);
+    doliprane.updateBenefitValue();
+    expect(doliprane).toEqual(DrugFactory.createDrug('Doliprane', -1, 0));
   });
 });
 
@@ -26,6 +44,12 @@ describe('Herbal Tea', () => {
     const herbalTea = DrugFactory.createDrug('Herbal Tea', 0, 3);
     herbalTea.updateBenefitValue();
     expect(herbalTea).toEqual(DrugFactory.createDrug('Herbal Tea', -1, 5));
+  });
+
+  it('should not have a benefit over 50', () => {
+    const herbalTea = DrugFactory.createDrug('Herbal Tea', 0, 50);
+    herbalTea.updateBenefitValue();
+    expect(herbalTea).toEqual(DrugFactory.createDrug('Herbal Tea', -1, 50));
   });
 });
 
@@ -52,6 +76,12 @@ describe('Fervex', () => {
     const fervex = DrugFactory.createDrug('Fervex', 0, 3);
     fervex.updateBenefitValue();
     expect(fervex).toEqual(DrugFactory.createDrug('Fervex', -1, 0));
+  });
+
+  it('should not have a benefit over 50', () => {
+    const fervex = DrugFactory.createDrug('Fervex', 10, 50);
+    fervex.updateBenefitValue();
+    expect(fervex).toEqual(DrugFactory.createDrug('Fervex', 9, 50));
   });
 });
 
