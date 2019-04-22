@@ -1,4 +1,4 @@
-import { DrugFactory, Pharmacy } from './pharmacy';
+import { DrugFactory, Pharmacy } from '../pharmacy';
 
 // Doliprane represents a common drug behavior according to the model
 describe('Doliprane (common drug)', () => {

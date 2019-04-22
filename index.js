@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { Pharmacy, DrugFactory } from './pharmacy';
+import { DrugFactory, Pharmacy } from './pharmacy';
 
 const drugs = [
   DrugFactory.createDrug('Doliprane', 20, 30),
@@ -16,7 +16,7 @@ for (let elapsedDays = 0; elapsedDays < 30; elapsedDays += 1) {
 }
 
 /* eslint-disable no-console */
-fs.writeFile('output.txt', log, (err) => {
+fs.writeFile('assets/output.txt', log, (err) => {
   if (err) {
     console.log('error');
   } else {
